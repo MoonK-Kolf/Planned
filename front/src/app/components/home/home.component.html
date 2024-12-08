@@ -1,0 +1,32 @@
+<div *ngIf="instalaciones.length > 0" class="wrapper">
+    <h1>Instalaciones</h1>
+    <div class="cols">
+        <div *ngFor="let instalacion of instalaciones" class="col" (click)="toggleHover($event)">
+            <div class="container">
+                <div class="front" [ngStyle]="{'background-image': 'url(https://unsplash.it/500/500/)'}">
+                    <div class="inner">
+                        <p>{{ instalacion.SubtipoInstalacion }}</p>
+                        <span>{{ instalacion.Instalacion }}</span>
+                        <div>Capacidad: {{ instalacion.Capacidad }}</div>
+                        <div>{{ instalacion.Precio || 0 }}€ /h</div>
+                    </div>
+                </div>
+
+                <div class="back">
+                    <div class="inner">
+                        <div class="address">
+                            <p>{{ instalacion.Direccion || 'Dirección no disponible' }}</p>
+                            <p>{{ instalacion.Telefono }}</p>
+                        </div>
+                        <hr />
+                        <div class="action">
+                            <button (click)="reservar(instalacion)">Reservar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="instalaciones.length == 0">No hay instalaciones disponibles</div>

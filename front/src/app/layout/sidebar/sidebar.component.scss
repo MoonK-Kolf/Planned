@@ -1,0 +1,61 @@
+nav {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+nav ul {
+    height: 100vh;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+nav ul li {
+    padding: 20px;
+    border-bottom: 1px solid #444;
+    cursor: pointer;
+}
+
+nav ul li:last-child {
+    margin-top: auto;
+    background-color: #444;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    background-color: #555;
+    color: #fff;
+}
+
+nav ul li.logout:hover {
+    background-color: red;
+    color: white;
+}
+
+nav ul li:last-child {
+    margin-top: auto;
+    background-color: #555;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    padding: 15px;
+}
+
+nav ul li:last-child:hover {
+    background-color: red;
+    color: white;
+}
+

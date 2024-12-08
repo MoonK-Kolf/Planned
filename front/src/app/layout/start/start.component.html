@@ -1,0 +1,17 @@
+<!-- Header -->
+<div *ngIf="isLogueado && showHeader" class="header">
+    <span class="title">Planned</span>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" *ngIf="isLogueado">
+    <app-sidebar></app-sidebar>
+</div>
+
+<!-- Contenido Principal -->
+<div class="main-content">
+    <router-outlet></router-outlet>
+</div>
+
+<!-- Tabbar -->
+<app-tabbar *ngIf="isMobile && isAuthenticated"></app-tabbar>

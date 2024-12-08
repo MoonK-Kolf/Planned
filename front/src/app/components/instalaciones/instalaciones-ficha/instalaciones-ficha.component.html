@@ -1,0 +1,105 @@
+<div class="container">
+    <button class="back-button" (click)="goBack()">← Atrás</button>
+    <h2>{{ ID ? 'Editar Instalación' : 'Crear Instalación' }}</h2>
+    <form (ngSubmit)="guardarInstalacion()" #instalacionForm="ngForm">
+        <!-- Campos de Instalación -->
+        <div class="form-group">
+            <label for="nombre">Nombre de la Instalación</label>
+            <input type="text" name="nombre" [(ngModel)]="instalacion.Instalacion" required />
+        </div>
+
+        <div class="form-group">
+            <label for="tipo">Tipo de Instalación</label>
+            <select name="tipo" [(ngModel)]="instalacion.TipoInstalacion_Id" required (change)="onTipoInstalacionChange()">
+                <option [ngValue]="null" disabled selected></option>
+                <option *ngFor="let tipo of tiposInstalacion" [ngValue]="tipo.TipoInstalacion_Id">{{ tipo.TipoInstalacion }}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="subtipo">Subtipo de Instalación</label>
+            <select name="subtipo" [(ngModel)]="instalacion.SubtipoInstalacion_Id" required [disabled]="!instalacion.TipoInstalacion_Id">
+                <option [ngValue]="null" disabled selected></option>
+                <option *ngFor="let subtipo of subtiposInstalacion" [ngValue]="subtipo.SubtipoInstalacion_Id">{{ subtipo.SubtipoInstalacion }}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="text" name="telefono" [(ngModel)]="instalacion.Telefono" required>
+        </div>
+
+        <div class="form-group">
+            <label for="capacidad">Capacidad</label>
+            <input type="number" name="capacidad" [(ngModel)]="instalacion.Capacidad" required />
+        </div>
+
+        <div class="form-group">
+            <label for="precio">Precio (€ / h)</label>
+            <input type="number" name="precio" [(ngModel)]="instalacion.Precio" required />
+        </div>
+
+        <div class="form-group">
+            <label for="direccion">Dirección</label>
+            <input type="text" name="direccion" [(ngModel)]="instalacion.Direccion" required />
+        </div>
+
+        <div class="form-group">
+            <label for="observaciones">Observaciones</label>
+            <textarea id="observaciones" name="observaciones" [(ngModel)]="instalacion.Observaciones"></textarea>
+        </div>
+
+        <!-- Sección de Horarios -->
+        <div class="horarios-section">
+            <h3>Horarios Disponibles</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Día</th>
+                        <th>Hora de Inicio</th>
+                        <th>Hora de Fin</th>
+                        <th>Cerrado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let horario of horarios; let i = index">
+                        <td>{{ horario.Dia | diaNombre }}</td>
+                        <td>
+                            <input 
+                                type="time"
+                                name="horaInicio{{i}}"
+                                [(ngModel)]="horarios[i].HoraInicio"
+                                [disabled]="horarios[i].Cerrado ?? false"
+                                required
+                            />
+                        </td>
+                        <td>
+                            <input 
+                                type="time"
+                                name="horaFin{{i}}"
+                                [(ngModel)]="horarios[i].HoraFin"
+                                [disabled]="horarios[i].Cerrado ?? false"
+                                required 
+                            />
+                        </td>
+                        <td>
+                            <input 
+                                type="checkbox" 
+                                name="cerrado{{i}}" 
+                                [(ngModel)]="horarios[i].Cerrado"
+                                (change)="toggleCerrado(i)"
+                                [attr.aria-label]="horario.Dia | diaNombre"
+                            /> Cerrado
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Botones -->
+        <div class="buttons">
+            <button type="submit">{{ ID ? 'Guardar' : 'Crear' }}</button>
+            <button type="button" (click)="eliminarInstalacion()" *ngIf="ID">Eliminar</button>
+        </div>
+    </form>
+</div>

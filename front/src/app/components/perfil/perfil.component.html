@@ -1,0 +1,133 @@
+<div class="container">
+    <form class="form-horizontal" id="contact_form" #perfilForm="ngForm" (ngSubmit)="onSubmit(perfilForm)" novalidate>
+        <fieldset>
+            <!-- Campos comunes -->
+            <!-- Nombre -->
+            <div class="form-group">
+                <label class="control-label">Nombre*</label>
+                <div class="input-group">
+                    <input name="nombre" type="text" [(ngModel)]="perfil.Nombre" required #nombre="ngModel" [ngClass]="{'is-invalid': perfilForm.submitted && nombre.invalid}">
+                </div>
+            </div>
+
+            <!-- Apellido -->
+            <div class="form-group">
+                <label class="control-label">Apellidos*</label>
+                <div class="input-group">
+                    <input name="apellidos" type="text" [(ngModel)]="perfil.Apellidos" required #apellidos="ngModel" [ngClass]="{'is-invalid': perfilForm.submitted && apellidos.invalid}">
+                </div>
+            </div>
+
+            <!-- Correo Electrónico -->
+            <div class="form-group">
+                <label class="control-label">Correo electrónico*</label>
+                <div class="input-group">
+                    <input name="correo" type="email" [(ngModel)]="perfil.Email" required email #correo="ngModel" [ngClass]="{'is-invalid': perfilForm.submitted && correo.invalid}">
+                </div>
+            </div>
+
+            <!-- Campos de Empresa -->
+            <ng-container *ngIf="esEmpresa">
+                <!-- Nombre de la Empresa -->
+                <div class="form-group">
+                    <label class="control-label">Nombre de la Empresa*</label>
+                    <div class="input-group">
+                        <input name="empresa" type="text" [(ngModel)]="perfil.Empresa.Empresa" required #empresa="ngModel" [ngClass]="{'is-invalid': perfilForm.submitted && empresa.invalid}">
+                    </div>
+                </div>
+
+                <!-- CIF -->
+                <div class="form-group">
+                    <label class="control-label">CIF</label>
+                    <div class="input-group">
+                        <input name="cif" type="text" [(ngModel)]="perfil.Empresa.CIF">
+                    </div>
+                </div>
+
+                <!-- Dirección de la Sede -->
+                <div class="form-group">
+                    <label class="control-label">Dirección de la Sede</label>
+                    <div class="input-group">
+                        <input name="direccionSede" type="text" [(ngModel)]="perfil.Empresa.DireccionSede">
+                    </div>
+                </div>
+
+                <!-- Fax -->
+                <div class="form-group">
+                    <label class="control-label">Fax</label>
+                    <div class="input-group">
+                        <input name="fax" type="text" [(ngModel)]="perfil.Empresa.Fax">
+                    </div>
+                </div>
+
+                <!-- Sitio Web -->
+                <div class="form-group">
+                    <label class="control-label">Sitio Web</label>
+                    <div class="input-group">
+                        <input name="sitioWeb" type="text" [(ngModel)]="perfil.Empresa.SitioWeb">
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Fecha de Nacimiento (solo si no es empresa) -->
+            <div class="form-group" *ngIf="!esEmpresa">
+                <label class="control-label">Fecha de Nacimiento</label>
+                <div class="input-group">
+                    <input name="FechaNacimiento" type="date" [(ngModel)]="perfil.FechaNacimiento">
+                </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="form-group">
+                <label class="control-label">Teléfono</label>
+                <div class="input-group">
+                    <input name="telefono" type="tel" [(ngModel)]="perfil.Telefono">
+                </div>
+            </div>
+
+            <!-- Dirección -->
+            <div class="form-group" *ngIf="!esEmpresa">
+                <label class="control-label">Dirección</label>
+                <div class="input-group">
+                    <input name="direccion" type="text" [(ngModel)]="perfil.Direccion">
+                </div>
+            </div>
+
+            <!-- Provincia -->
+            <div class="form-group">
+                <label class="control-label">Provincia</label>
+                <div class="input-group">
+                    <select name="provincia" [(ngModel)]="perfil.Provincia_Id">
+                        <option value="">Seleccione la provincia</option>
+                        <option *ngFor="let provincia of provincias" [value]="provincia.Provincia_Id">
+                            {{ provincia.Provincia }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Población -->
+            <div class="form-group">
+                <label class="control-label">Población</label>
+                <div class="input-group">
+                    <input name="Poblacion" type="text" [(ngModel)]="perfil.Poblacion">
+                </div>
+            </div>
+
+            <!-- Código Postal -->
+            <div class="form-group">
+                <label class="control-label">Código Postal</label>
+                <div class="input-group">
+                    <input name="CPostal" type="text" [(ngModel)]="perfil.CPostal">
+                </div>
+            </div>
+
+            <!-- Guardar -->
+            <div class="form-group">
+                <div class="input-group">
+                    <button type="submit">Guardar</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

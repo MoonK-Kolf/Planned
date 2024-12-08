@@ -1,0 +1,77 @@
+<section class="user">
+    <div class="user_options-container">
+        <div class="user_options-text">
+            <div class="user_options-unregistered">
+                <h2 class="user_unregistered-title">¿No tienes una cuenta?</h2>
+                <p class="user_unregistered-text">Regístrate para disfrutar de nuestros servicios.</p>
+                <button class="user_unregistered-signup" id="signup-button">Registrarse</button>
+            </div>
+    
+            <div class="user_options-registered">
+                <h2 class="user_registered-title">¿Ya tienes una cuenta?</h2>
+                <p class="user_registered-text">Inicia sesión para continuar.</p>
+                <button class="user_registered-login" id="login-button">Iniciar Sesión</button>
+            </div>
+        </div>
+    
+        <div class="user_options-forms" id="user_options-forms">
+            <!-- Formulario de inicio de sesión -->
+            <div class="user_forms-login">
+                <h2 class="forms_title">Iniciar Sesión</h2>
+                <form class="forms_form" (ngSubmit)="onLogin()" #loginForm="ngForm">
+                    <fieldset class="forms_fieldset">
+                        <div class="forms_field">
+                            <input type="text" placeholder="Usuario" class="forms_field-input" [(ngModel)]="loginData.username" name="username" required autofocus autocomplete="username"/>
+                        </div>
+
+                        <div class="forms_field">
+                            <input type="password" placeholder="Contraseña" class="forms_field-input" [(ngModel)]="loginData.password" name="password" required autocomplete="current-password"/>
+                        </div>
+                    </fieldset>
+
+                    <div class="forms_buttons">
+                        <input type="submit" value="Iniciar Sesión" class="forms_buttons-action" />
+                        <!-- <button type="button" class="forms_buttons-forgot">¿Olvidaste tu contraseña?</button> -->
+                    </div>
+                </form>
+            </div>
+
+            <!-- Formulario de registro -->
+            <div class="user_forms-signup">
+                <h2 class="forms_title">Registrarse</h2>
+                <form class="forms_form" (ngSubmit)="onSignUp()" #signUpForm="ngForm">
+                    <fieldset class="forms_fieldset">
+                        <div class="forms_field">
+                            <input type="text" placeholder="Usuario" class="forms_field-input" [(ngModel)]="signUpData.username" name="username" required autocomplete="username"/>
+                        </div>
+
+                        <div class="forms_field">
+                            <input type="email" placeholder="Email" class="forms_field-input" [(ngModel)]="signUpData.email" name="email" required autocomplete="email"/>
+                        </div>
+
+                        <div class="forms_field">
+                            <input type="password" placeholder="Contraseña" class="forms_field-input" [(ngModel)]="signUpData.password" name="password" required autocomplete="current-password"/>
+                        </div>
+                        
+                        <div class="forms_field perfil-radio">
+                            <label>
+                                <input type="radio" name="perfil" [(ngModel)]="signUpData.perfil" value="Usuario" checked>Usuario
+                            </label>
+                            <label>
+                                <input type="radio" name="perfil" [(ngModel)]="signUpData.perfil" value="Empresa">Empresa
+                            </label>
+                        </div>
+
+                        <div class="forms_field" *ngIf="signUpData.perfil === 'Empresa'" style="border-top: 1px solid #ccc;">
+                            <input type="text" placeholder="Nombre Empresa" name="Empresa" class="forms_field-input" [(ngModel)]="signUpData.nombreEmpresa" required />
+                        </div>
+                    </fieldset>
+
+                    <div class="forms_buttons">
+                        <input type="submit" value="Registrarse" class="forms_buttons-action" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

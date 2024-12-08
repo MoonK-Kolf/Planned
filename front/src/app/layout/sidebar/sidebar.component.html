@@ -1,0 +1,9 @@
+<nav class="sidebar" *ngIf="userProfileService.perfil$ | async as perfil">
+    <ul>
+      <li><a routerLink="/app/home">Home</a></li>
+      <li *ngIf="esEmpresa"><a routerLink="/app/instalaciones">Mis Instalaciones</a></li>
+      <li><a routerLink="/app/reservas">Reservas</a></li>
+      <li><a routerLink="/app/perfil">Perfil</a></li>
+      <li class="logout" (click)="logout()">Logout</li>
+    </ul>
+</nav>  

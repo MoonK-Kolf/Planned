@@ -1,0 +1,38 @@
+<div class="container">
+    <button class="back-button" (click)="goBack()">← Atrás</button>
+    <h2>Reservar Instalación</h2>
+
+    <div *ngIf="instalacion">
+        <h3>{{ instalacion.Instalacion }}</h3>
+        <p><strong>Capacidad:</strong> {{ instalacion.Capacidad }}</p>
+        <p><strong>Precio:</strong> {{ instalacion.Precio || 0 }}€ /h</p>
+        <p><strong>Dirección:</strong> {{ instalacion.Direccion || 'No disponible' }}</p>
+        <p><strong>Teléfono:</strong> {{ instalacion.Telefono }}</p>
+    </div>
+
+    <form (ngSubmit)="reservar()" class="reservation-form">
+        <div class="form-group">
+            <label for="fechaReserva">Fecha de Reserva:</label>
+            <input type="date" id="fechaReserva" name="fechaReserva" [(ngModel)]="fechaReserva" (change)="onFechaChange()" [min]="minDate" required>
+        </div>
+
+        <div class="form-group" *ngIf="horariosDisponibles.length > 0 else horariosEmpty">
+            <label for="horario">Horario Disponible:</label>
+            <select id="horario" name="horario" [(ngModel)]="selectedHorario" required>
+                <option [ngValue]="null" disabled selected>Selecciona un horario</option>
+                <option 
+                    *ngFor="let horario of horariosDisponibles" [ngValue]="horario">
+                    {{ horario.HoraInicio }} - {{ horario.HoraFin }}
+                </option>
+            </select>
+        </div>
+
+        <ng-template #horariosEmpty>
+            <div *ngIf="horariosDisponibles.length === 0 && fechaReserva">
+                <p>No hay horarios disponibles para la fecha seleccionada.</p>
+            </div>
+        </ng-template>
+
+        <button type="submit" [disabled]="!selectedHorario">Reservar</button>
+    </form>
+</div>
