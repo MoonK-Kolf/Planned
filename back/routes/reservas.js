@@ -11,9 +11,6 @@ router.get('/instalacion/:id/disponibles', async (req, res) => {
     const instalacionId = parseInt(req.params.id, 10);
     const fecha = req.query.fecha;
 
-    console.log("ID -> ", instalacionId);
-    console.log("FECHA -> ", fecha);
-
     if (!fecha) { return res.json({ success: false, message: 'Fecha no proporcionada' }) }
 
     try {

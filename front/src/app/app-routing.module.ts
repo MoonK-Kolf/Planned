@@ -10,12 +10,16 @@ import { InstalacionesFichaComponent } from './components/instalaciones/instalac
 import { ReservasComponent } from './components/reservas/reservas.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { ReservarComponent } from './components/reservar/reservar.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 //Auth
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'app',
     component: StartComponent,
     canActivate: [AuthGuard],

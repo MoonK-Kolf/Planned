@@ -11,7 +11,7 @@
     padding-left: 10px;
     background-color: #333;
     color: white;
-    z-index: 1000;
+    z-index: 2000;
 }
 
 .title {
@@ -28,13 +28,17 @@
     background-color: #333;
     color: white;
     padding: 10px;
-    z-index: 1000;
+    z-index: 3000;
 }
 
 .main-content {
-    margin-left: 250px;
+    margin: 65px 0 0 250px;
     padding: 20px;
     overflow-y: hidden;
+
+    @media screen and (max-width: 48rem) {
+        margin: 65px auto 0;
+    }
 }
 
 .tabbar {

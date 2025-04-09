@@ -1,7 +1,30 @@
-<div *ngIf="instalaciones.length > 0" class="wrapper">
+<header class="header">
     <h1>Instalaciones</h1>
-    <div class="cols">
-        <div *ngFor="let instalacion of instalaciones" class="col" (click)="toggleHover($event)">
+
+    <!-- Filtros -->
+    <div class="filtros">
+        <label for="tipo">Tipo de Instalación:</label>
+        <select id="tipo" [(ngModel)]="filtroTipo" (change)="onTipoChange()">
+            <option [ngValue]="null">Todos</option>
+            <option *ngFor="let tipo of tiposInstalacion" [ngValue]="tipo.TipoInstalacion_Id">{{ tipo.TipoInstalacion }}
+            </option>
+        </select>
+
+        <label for="subtipo">Subtipo de Instalación:</label>
+        <select id="subtipo" [(ngModel)]="filtroSubtipo" (change)="onSubtipoChange()" [disabled]="!filtroTipo">
+            <option [ngValue]="null">Todos</option>
+            <option *ngFor="let subtipo of subtiposFiltrados" [ngValue]="subtipo.SubtipoInstalacion_Id">{{
+                subtipo.SubtipoInstalacion }}</option>
+        </select>
+
+        <button (click)="resetearFiltros()" [disabled]="!filtroTipo && !filtroSubtipo">Resetear Filtros</button>
+    </div>
+</header>
+
+<!-- Instalaciones -->
+<div *ngIf="instalaciones.length > 0" class="wrapper">
+    <div *ngIf="instalacionesFiltradas.length > 0 else instalacionesEmpty" class="cols">
+        <div *ngFor="let instalacion of instalacionesFiltradas" class="col" (click)="toggleHover($event)">
             <div class="container">
                 <div class="front" [ngStyle]="{'background-image': 'url(https://unsplash.it/500/500/)'}">
                     <div class="inner">
@@ -20,13 +43,16 @@
                         </div>
                         <hr />
                         <div class="action">
-                            <button (click)="reservar(instalacion)">Reservar</button>
+                            <button (click)="reservar(instalacion); $event.stopPropagation()">Reservar</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <ng-template #instalacionesEmpty>
+        <div *ngIf="instalacionesFiltradas.length === 0" class="wrapper empty">
+            <p>No hay instalaciones disponibles con los filtros seleccionados.</p>
+        </div>
+    </ng-template>
 </div>
-
-<div *ngIf="instalaciones.length == 0">No hay instalaciones disponibles</div>

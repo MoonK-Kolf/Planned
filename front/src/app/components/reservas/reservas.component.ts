@@ -22,7 +22,7 @@ import { Reserva } from 'src/app/models/reserva.model';
 })
 export class ReservasComponent implements OnInit {
   reservas: Reserva[] = [];
-  displayedColumns: string[] = ['Reserva_Id', 'Instalacion', 'FechaReserva', 'HoraInicio', 'HoraFin', 'CreadoEn', 'acciones'];
+  displayedColumns: string[] = ['Reserva_Id', 'Instalacion', 'FechaReserva', 'HoraInicio', 'HoraFin', 'Observaciones', 'acciones'];
   dataSource = new MatTableDataSource<Reserva>();
   expandedElement: Reserva | null = null;
   loading: boolean = false;

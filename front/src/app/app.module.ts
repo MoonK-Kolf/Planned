@@ -31,6 +31,8 @@ import { ReservarComponent } from './components/reservar/reservar.component';
 
 // Pipes
 import { DiaNombrePipe } from './pipes/dia-nombre.pipe';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { DiaNombrePipe } from './pipes/dia-nombre.pipe';
     ReservasComponent,
     InstalacionesFichaComponent,
     DiaNombrePipe,
-    ReservarComponent
+    ReservarComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

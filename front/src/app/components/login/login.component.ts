@@ -133,6 +133,10 @@ export class LoginComponent {
       return { success: false, message: 'El campo "Contraseña" es obligaorio' };
     }
 
+    if (this.signUpData.password.length < 6) {
+      return { success: false, message: 'La contraseña debe tener al menos 6 caracteres'}
+    }
+
     if (!this.signUpData.perfil) {
       return { success: false, message: 'Debe seleccionar un perfil (Usuario o Empresa)' };
     }

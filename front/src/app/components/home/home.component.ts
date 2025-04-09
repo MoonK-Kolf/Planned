@@ -11,6 +11,13 @@ import { InstalacionService } from 'src/app/services/instalacion.service';
 })
 export class HomeComponent implements OnInit{
   instalaciones: any[] = [];
+  instalacionesFiltradas: any[] = [];
+
+  tiposInstalacion: any[] = [];
+  subtiposFiltrados: any[] = [];
+
+  filtroTipo: number | null = null;
+  filtroSubtipo: number | null = null;
 
   constructor(
     private instalacionService: InstalacionService,
@@ -18,9 +25,23 @@ export class HomeComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    this.cargarDatos();
+  }
+
+  cargarDatos(): void {
     this.instalacionService.obtenerInstalaciones().subscribe((response) => {
       if (response.success) {
         this.instalaciones = response.data;
+        this.instalacionesFiltradas = [...this.instalaciones];
+      } else {
+        console.error(response.message);
+      }
+    });
+
+    // Tipos
+    this.instalacionService.obtenerTiposInstalacion().subscribe((response) => {
+      if (response.success) {
+        this.tiposInstalacion = response.data;
       } else {
         console.error(response.message);
       }
@@ -33,5 +54,45 @@ export class HomeComponent implements OnInit{
 
   toggleHover(event: any) {
     event.currentTarget.classList.toggle('hover');
+  }
+
+  filtrarInstalaciones(): void {
+    this.instalacionesFiltradas = this.instalaciones.filter(instalacion => {
+      const coincideTipo = this.filtroTipo ? instalacion.TipoInstalacion_Id === this.filtroTipo : true;
+      const coincideSubtipo = this.filtroSubtipo ? instalacion.SubtipoInstalacion_Id === this.filtroSubtipo : true;
+      return coincideTipo && coincideSubtipo;
+    });
+  }
+
+  resetearFiltros(): void {
+    this.filtroTipo = null;
+    this.filtroSubtipo = null;
+    this.instalacionesFiltradas = [...this.instalaciones];
+    this.subtiposFiltrados = [];
+  }
+
+  onTipoChange(): void {
+    if (this.filtroTipo) {
+      this.instalacionService.obtenerSubtiposInstalacion(this.filtroTipo).subscribe((response) => {
+        if (response.success) {
+          this.subtiposFiltrados = response.data;
+          this.filtroSubtipo = null;
+          this.filtrarInstalaciones();
+        } else {
+          console.error(response.message);
+          this.subtiposFiltrados = [];
+          this.filtroSubtipo = null;
+          this.filtrarInstalaciones();
+        }
+      });
+    } else {
+      this.subtiposFiltrados = [];
+      this.filtroSubtipo = null;
+      this.filtrarInstalaciones();
+    }
+  }
+
+  onSubtipoChange(): void {
+    this.filtrarInstalaciones();
   }
 }

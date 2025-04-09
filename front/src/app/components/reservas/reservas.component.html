@@ -45,10 +45,10 @@
                 <td mat-cell *matCellDef="let element"> {{ formatHora(element.HoraFin) }} </td>
             </ng-container>
 
-            <!-- Creado En Column -->
-            <ng-container matColumnDef="CreadoEn">
-                <th mat-header-cell *matHeaderCellDef> Creado En </th>
-                <td mat-cell *matCellDef="let element"> {{ element.CreadoEn | date:'short' }} </td>
+            <!-- Observaciones -->
+            <ng-container matColumnDef="Observaciones">
+                <th mat-header-cell *matHeaderCellDef> Observaciones </th>
+                <td mat-cell *matCellDef="let element"> {{ element.Observaciones | date:'short' }} </td>
             </ng-container>
 
             <!-- Acciones Column -->
