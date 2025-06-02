@@ -1,69 +1,14 @@
-const pool = require('../config/db');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { google } = require('googleapis');
-const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
+const pool = require('../config/db');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+
+const { enviarCorreo } = require('../services/mailer');
 
 dotenv.config();
 
-const CLIENT_ID = process.env.GMAIL_CLIENT_ID;
-const CLIENT_SECRET = process.env.GMAIL_CLIENT_SECRET;
-const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-const REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN;
-
-// Configurar OAuth2 client
-const oAuth2Client = new google.auth.OAuth2(
-    CLIENT_ID,
-    CLIENT_SECRET,
-    REDIRECT_URI
-);
-
-oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
-
 // Crear el transportador
-const getTransporter = async () => {
-    try {
-        const accessTokenResponse = await oAuth2Client.getAccessToken();
-        const accessToken = accessTokenResponse?.token;
-
-        if (!accessToken) {
-            throw new Error('Failed to obtain access token');
-        }
-
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                type: 'OAuth2',
-                user: process.env.EMAIL_USER,
-                clientId: CLIENT_ID,
-                clientSecret: CLIENT_SECRET,
-                refreshToken: REFRESH_TOKEN,
-                accessToken: accessToken
-            }
-        });
-
-        return transporter;
-    } catch (error) {
-        console.error('Error creating transporter:', error);
-        throw new Error('Failed to create transporter');
-    }
-};
-
-// Función para enviar correos electrónicos
-const enviarCorreo = async (mailOptions) => {
-    try {
-        const transporter = await getTransporter();
-        const info = await transporter.sendMail(mailOptions);
-        console.log('Correo enviado:', info.response);
-        return { success: true, message: 'Correo enviado exitosamente' };
-    } catch (error) {
-        console.error('Error al enviar el correo:', error);
-        return { success: false, message: 'Error al enviar el correo de restablecimiento.' };
-    }
-};
-
 const register = async (req, res) => {
     const { username, email, password, perfil, empresa } = req.body;
 
@@ -138,7 +83,10 @@ const forgotPassword = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-        return res.json({ success: false, message: 'El campo "Email" es obligatorio.' });
+        return res.json({ 
+            success: false,
+            message: 'El campo "Email" es obligatorio.'
+        });
     }
 
     try {
@@ -157,9 +105,7 @@ const forgotPassword = async (req, res) => {
 
         // Generar un token seguro
         const token = crypto.randomBytes(32).toString('hex');
-
-        // Establecer una fecha de expiración (por ejemplo, 1 hora)
-        const expiresAt = new Date(Date.now() + 3600000); // 1 hora en milisegundos
+        const expiresAt = new Date(Date.now() + 3600000); // 1 hora
 
         // Almacenar el token en la base de datos
         await pool.query(`
@@ -168,25 +114,31 @@ const forgotPassword = async (req, res) => {
         `, [user.Cod_Usu, token, expiresAt]);
 
         // Crear el enlace de restablecimiento
-        const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+        const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${ token }`;
 
         // Enviar el correo electrónico al usuario
         const mailOptions = {
-            from: process.env.EMAIL_USER,
             to: user.Email,
             subject: 'Restablecimiento de Contraseña',
             html: `
-                <p>Hola ${user.Usuario},</p>
-                <p>Hemos recibido una solicitud para restablecer tu contraseña.</p>
-                <p>Haz clic en el siguiente enlace para establecer una nueva contraseña:</p>
-                <a href="${resetLink}">${resetLink}</a>
-                <p>Este enlace expirará en 1 hora.</p>
-                <p>Si no solicitaste este cambio, por favor ignora este correo.</p>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #2563eb;">Restablecer tu contraseña</h2>
+                    <p>Hola ${user.Usuario},</p>
+                    <p>Hemos recibido una solicitud para restablecer tu contraseña.</p>
+                    <p>Por favor, haz clic en el siguiente botón para continuar:</p>
+                    <a href="${resetLink}" 
+                       style="display: inline-block; padding: 10px 20px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 5px;">
+                       Restablecer contraseña
+                    </a>
+                    <p style="margin-top: 20px; font-size: 0.9em; color: #6b7280;">
+                        Si no solicitaste este cambio, puedes ignorar este mensaje.
+                        <br>Este enlace expirará en 1 hora.
+                    </p>
+                </div>
             `
         };
 
         const correoEnviado = await enviarCorreo(mailOptions);
-
         return res.json(correoEnviado);
 
     } catch (error) {
@@ -243,5 +195,61 @@ const resetPassword = async (req, res) => {
         return res.json({ success: false, message: 'Error en el servidor.' });
     }
 };
+
+//recuperación de contraseñas con Oauth2 de google.
+// const CLIENT_ID = process.env.GMAIL_CLIENT_ID;
+// const CLIENT_SECRET = process.env.GMAIL_CLIENT_SECRET;
+// const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
+// const REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN;
+
+// // Configurar OAuth2 client
+// const oAuth2Client = new google.auth.OAuth2(
+//     CLIENT_ID,
+//     CLIENT_SECRET,
+//     REDIRECT_URI
+// );
+
+// oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+
+// const getTransporter = async () => {
+//     try {
+//         const accessTokenResponse = await oAuth2Client.getAccessToken();
+//         const accessToken = accessTokenResponse?.token;
+
+//         if (!accessToken) {
+//             throw new Error('Failed to obtain access token');
+//         }
+
+//         const transporter = nodemailer.createTransport({
+//             service: 'gmail',
+//             auth: {
+//                 type: 'OAuth2',
+//                 user: process.env.EMAIL_USER,
+//                 clientId: CLIENT_ID,
+//                 clientSecret: CLIENT_SECRET,
+//                 refreshToken: REFRESH_TOKEN,
+//                 accessToken: accessToken
+//             }
+//         });
+
+//         return transporter;
+//     } catch (error) {
+//         console.error('Error creating transporter:', error);
+//         throw new Error('Failed to create transporter');
+//     }
+// };
+
+// Función para enviar correos electrónicos
+// const enviarCorreo = async (mailOptions) => {
+//     try {
+//         const transporter = await getTransporter();
+//         const info = await transporter.sendMail(mailOptions);
+//         console.log('Correo enviado:', info.response);
+//         return { success: true, message: 'Correo enviado exitosamente' };
+//     } catch (error) {
+//         console.error('Error al enviar el correo:', error);
+//         return { success: false, message: 'Error al enviar el correo de restablecimiento.' };
+//     }
+// };
 
 module.exports = { login, register, forgotPassword, resetPassword };
