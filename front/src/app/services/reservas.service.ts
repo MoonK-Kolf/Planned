@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 // Models
 import { Reserva } from '../models/reserva.model';
@@ -51,5 +52,11 @@ export class ReservasService {
   getReservaPorId(id: number): Observable<any> {
     const headers = this.getHeaders();
     return this.http.get<any>(`${this.reservasURL}/${id}`, { headers });
+  }
+
+  // Eliminar una reserva
+  eliminarReserva(reservaId: number): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.delete(`${this.reservasURL}/${reservaId}`, { headers });
   }
 }

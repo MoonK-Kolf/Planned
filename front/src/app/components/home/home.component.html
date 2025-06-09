@@ -26,7 +26,7 @@
     <div *ngIf="instalacionesFiltradas.length > 0 else instalacionesEmpty" class="cols">
         <div *ngFor="let instalacion of instalacionesFiltradas" class="col" (click)="toggleHover($event)">
             <div class="container">
-                <div class="front" [ngStyle]="{'background-image': 'url(https://unsplash.it/500/500/)'}">
+                <div class="front" [ngStyle]="{'background-image': 'url(' + instalacion.imagenUrl + ')'}">
                     <div class="inner">
                         <p>{{ instalacion.SubtipoInstalacion }}</p>
                         <span>{{ instalacion.Instalacion }}</span>

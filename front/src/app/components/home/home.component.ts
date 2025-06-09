@@ -31,8 +31,11 @@ export class HomeComponent implements OnInit{
   cargarDatos(): void {
     this.instalacionService.obtenerInstalaciones().subscribe((response) => {
       if (response.success) {
-        this.instalaciones = response.data;
-        this.instalacionesFiltradas = [...this.instalaciones];
+        this.instalaciones = response.data.map((inst: any, index: any) => ({
+        ...inst,
+        imagenUrl: this.generarImagenDeporte(inst, index)
+      }));
+      this.instalacionesFiltradas = [...this.instalaciones];
       } else {
         console.error(response.message);
       }
@@ -46,6 +49,11 @@ export class HomeComponent implements OnInit{
         console.error(response.message);
       }
     });
+  }
+
+  generarImagenDeporte(instalacion: any, index: number): string {
+    const tema = encodeURIComponent(instalacion.SubtipoInstalacion || 'deporte');
+    return `https://picsum.photos/seed/fitness${index}/500/500`;
   }
 
   reservar(instalacion: any): void {

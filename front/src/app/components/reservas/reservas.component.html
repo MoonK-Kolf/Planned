@@ -60,36 +60,30 @@
                             {{ expandedElement === element ? 'expand_less' : 'expand_more' }}
                         </mat-icon>
                     </button>
+                    <button mat-icon-button (click)="eliminarReserva(element.Reserva_Id)" 
+                            matTooltip="Cancelar reserva" color="warn"
+                            [disabled]="isReservaPasada(element.FechaReserva, element.HoraInicio)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
                 </td>
             </ng-container>
 
             <!-- Expanded Detail Column -->
             <ng-container matColumnDef="expandedDetail">
                 <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-                    <div class="example-element-detail"
-                        [@detailExpand]="expandedElement === element ? 'expanded' : 'collapsed'">
-                        <div *ngIf="expandedElement === element">
-                            <h4>Detalles de la Instalación</h4>
-                            <p><strong>Dirección:</strong> {{ element.Direccion }}</p>
-                            <p><strong>Teléfono:</strong> {{ element.Telefono }}</p>
-                            <p><strong>Capacidad:</strong> {{ element.Capacidad }}</p>
-                            <p><strong>Precio:</strong> {{ element.Precio }}€ /h</p>
-                        </div>
+                    <div class="example-element-detail" *ngIf="expandedElement === element">
+                        <h4>Detalles de la Instalación</h4>
+                        <p><strong>Dirección:</strong> {{ element.Direccion }}</p>
+                        <p><strong>Teléfono:</strong> {{ element.Telefono }}</p>
+                        <p><strong>Capacidad:</strong> {{ element.Capacidad }}</p>
+                        <p><strong>Precio:</strong> {{ element.Precio }}€ /h</p>
                     </div>
                 </td>
             </ng-container>
 
-            <!-- Header Row -->
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-
-            <!-- Main Data Row -->
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="element-row"
-                [class.expanded]="expandedElement === row">
-            </tr>
-
-            <!-- Expanded Detail Row -->
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
-
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.expanded]="expandedElement === row"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" [style.display]="expandedElement === row ? '' : 'none'"></tr>
         </table>
     </div>
 

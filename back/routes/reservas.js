@@ -124,4 +124,33 @@ router.get('/usuario', async (req, res) => {
     }
 });
 
+router.delete('/:id', async (req, res) => {
+    const reservaId = parseInt(req.params.id, 10);
+    const userId = req.user.id;
+
+    console.log(reservaId);
+    console.log(userId);
+
+    if (isNaN(reservaId)) {
+        return res.json({ success: false, message: 'ID de reserva inválido' });
+    }
+
+    try {
+        const reserva = await pool.query(`
+        SELECT * FROM "Reservas" 
+        WHERE "Reserva_Id" = $1 AND "Cod_Usu" = $2
+        `, [reservaId, userId]);
+
+        if (reserva.rows.length === 0) {
+            return res.json({ success: false, message: 'Reserva no encontrada o no autorizada' });
+        }
+
+        await pool.query(`DELETE FROM "Reservas" WHERE "Reserva_Id" = $1`, [reservaId]);
+        res.json({ success: true, message: 'Reserva eliminada correctamente' });
+    } catch (error) {
+        console.error('Error al eliminar la reserva:', error);
+        res.json({ success: false, message: 'Error al eliminar la reserva' });
+    }
+});
+
 module.exports = router;

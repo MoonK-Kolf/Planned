@@ -1,6 +1,6 @@
 .reservas-container {
     padding: 20px;
-    max-width: 1000px;
+    max-width: 1200px;
     margin: auto;
 
     h2 {
@@ -8,6 +8,7 @@
         text-align: center;
         font-weight: bold;
         color: #3f51b5;
+        font-size: 24px;
     }
 
     .loading,
@@ -15,6 +16,8 @@
     .no-reservas {
         text-align: center;
         margin: 20px 0;
+        padding: 15px;
+        border-radius: 4px;
 
         mat-icon {
             vertical-align: middle;
@@ -27,50 +30,153 @@
         }
     }
 
-    .table-container {
+    .error {
+        background-color: #ffebee;
+        color: #d32f2f;
+    }
+
+    .loading {
+        background-color: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .no-reservas {
+        background-color: #f5f5f5;
+        color: #757575;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
         border-radius: 8px;
         overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-        table {
-            width: 100%;
-            border-spacing: 0;
+        th.mat-header-cell {
+            background-color: #3f51b5;
+            color: white;
+            font-weight: 500;
+            padding: 16px;
+            text-align: left;
+            font-size: 0.95rem;
+            position: relative;
 
-            th.mat-header-cell {
+            &:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 20%;
+                height: 60%;
+                width: 1px;
+                background-color: rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        td.mat-cell {
+            padding: 14px 16px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.2s;
+        }
+
+        tr.mat-row {
+            &:hover {
                 background-color: #f5f5f5;
-                font-weight: bold;
-                padding: 16px;
-                text-align: left;
-                font-size: 1rem;
             }
 
-            td.mat-cell {
-                padding: 16px;
-                font-size: 0.9rem;
-                border-bottom: 1px solid #e0e0e0;
-            }
-
-            .expanded-detail {
-                background-color: #fafafa;
-                padding: 16px;
-                border-left: 4px solid #3f51b5;
-                border-radius: 0 0 8px 8px;
-            }
-
-            .expanded-row {
+            &.expanded {
                 background-color: #e3f2fd;
             }
         }
+
+        .detail-row {
+            height: 0;
+            overflow: hidden;
+            transition: height 225ms cubic-bezier(0.4, 0.0, 0.2, 1);
+            
+            &.expanded {
+                height: auto;
+            }
+            }
+
+        .example-element-detail {
+            overflow: hidden;
+            display: block;
+            background-color: #fafafa;
+            padding: 16px;
+            border-left: 4px solid #3f51b5;
+            border-radius: 0 0 4px 4px;
+            box-shadow: inset 0 3px 5px -3px rgba(0, 0, 0, 0.2);
+            transition: all 225ms cubic-bezier(0.4, 0.0, 0.2, 1);
+
+            h4 {
+                margin-top: 0;
+                color: #3f51b5;
+                font-size: 1.1rem;
+            }
+
+            p {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+        }
+
+        .mat-icon-button {
+            color: #3f51b5;
+            transition: transform 0.2s;
+
+            &:hover {
+                background-color: rgba(63, 81, 181, 0.1);
+            }
+        }
+
+        .expanded .mat-icon-button {
+            transform: rotate(180deg);
+        }
+    }
+
+    .reserva-pasada {
+        opacity: 0.8;
+
+        td {
+            color: #757575;
+        }
+    }
+
+    /* Añade esto a tu CSS */
+    .mat-icon-button {
+        margin: 0 4px;
+        
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        &[color="warn"]:hover {
+            background-color: rgba(244, 67, 54, 0.04);
+        }
+    }
+
+    /* Estilo para botones deshabilitados */
+    .mat-icon-button[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 
     /* Responsividad */
     @media (max-width: 768px) {
-        .table-container {
-            overflow-x: auto;
-
-            th.mat-header-cell,
-            td.mat-cell {
-                font-size: 0.8rem;
-                padding: 12px;
+        .reservas-container {
+            table {
+                .example-element-detail {
+                    grid-template-columns: 1fr;
+                    
+                    p {
+                        strong {
+                            min-width: 70px;
+                        }
+                    }
+                }
             }
         }
     }

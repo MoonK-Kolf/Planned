@@ -12,6 +12,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // CDK Module
 import { CdkTableModule } from '@angular/cdk/table';
@@ -28,6 +31,7 @@ import { PerfilComponent } from './components/perfil/perfil.component';
 import { ReservasComponent } from './components/reservas/reservas.component';
 import { InstalacionesFichaComponent } from './components/instalaciones/instalaciones-ficha/instalaciones-ficha.component';
 import { ReservarComponent } from './components/reservar/reservar.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 // Pipes
 import { DiaNombrePipe } from './pipes/dia-nombre.pipe';
@@ -49,7 +53,8 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     DiaNombrePipe,
     ReservarComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +67,10 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     MatButtonModule,
     MatExpansionModule,
     CdkTableModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]

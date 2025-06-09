@@ -66,7 +66,7 @@ export class ReservarComponent implements OnInit {
 
   cargarInstalacion(): void {
     this.instalacionService.obtenerInstalacionPorId(this.instalacionId).subscribe(
-      data => { this.instalacion = data },
+      data => { this.instalacion = data.data },
       error => { console.error('Error al cargar la instalación', error) }
     );
   }
