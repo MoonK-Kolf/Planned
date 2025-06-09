@@ -107,6 +107,7 @@ router.get('/usuario', async (req, res) => {
             i."Instalacion",
             i."Direccion",
             i."Capacidad",
+            i."Telefono",
             i."Precio",
             r."FechaReserva",
             r."HoraInicio",

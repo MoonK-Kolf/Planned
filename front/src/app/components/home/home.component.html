@@ -1,58 +1,75 @@
 <header class="header">
     <h1>Instalaciones</h1>
 
-    <!-- Filtros -->
+    <!-- Filtros responsivos -->
     <div class="filtros">
-        <label for="tipo">Tipo de Instalación:</label>
-        <select id="tipo" [(ngModel)]="filtroTipo" (change)="onTipoChange()">
-            <option [ngValue]="null">Todos</option>
-            <option *ngFor="let tipo of tiposInstalacion" [ngValue]="tipo.TipoInstalacion_Id">{{ tipo.TipoInstalacion }}
-            </option>
-        </select>
+        <div class="filter-group">
+            <label for="tipo">Tipo:</label>
+            <select id="tipo" [(ngModel)]="filtroTipo" (change)="onTipoChange()">
+                <option [ngValue]="null">Todos</option>
+                <option *ngFor="let tipo of tiposInstalacion" [ngValue]="tipo.TipoInstalacion_Id">
+                    {{ tipo.TipoInstalacion }}
+                </option>
+            </select>
+        </div>
 
-        <label for="subtipo">Subtipo de Instalación:</label>
-        <select id="subtipo" [(ngModel)]="filtroSubtipo" (change)="onSubtipoChange()" [disabled]="!filtroTipo">
-            <option [ngValue]="null">Todos</option>
-            <option *ngFor="let subtipo of subtiposFiltrados" [ngValue]="subtipo.SubtipoInstalacion_Id">{{
-                subtipo.SubtipoInstalacion }}</option>
-        </select>
+        <div class="filter-group">
+            <label for="subtipo">Subtipo:</label>
+            <select id="subtipo" [(ngModel)]="filtroSubtipo" (change)="onSubtipoChange()" [disabled]="!filtroTipo">
+                <option [ngValue]="null">Todos</option>
+                <option *ngFor="let subtipo of subtiposFiltrados" [ngValue]="subtipo.SubtipoInstalacion_Id">
+                    {{ subtipo.SubtipoInstalacion }}
+                </option>
+            </select>
+        </div>
 
-        <button (click)="resetearFiltros()" [disabled]="!filtroTipo && !filtroSubtipo">Resetear Filtros</button>
+        <div class="filter-group">
+            <button (click)="resetearFiltros()" [disabled]="!filtroTipo && !filtroSubtipo">
+                Resetear
+            </button>
+        </div>
     </div>
 </header>
 
-<!-- Instalaciones -->
-<div *ngIf="instalaciones.length > 0" class="wrapper">
-    <div *ngIf="instalacionesFiltradas.length > 0 else instalacionesEmpty" class="cols">
-        <div *ngFor="let instalacion of instalacionesFiltradas" class="col" (click)="toggleHover($event)">
-            <div class="container">
-                <div class="front" [ngStyle]="{'background-image': 'url(' + instalacion.imagenUrl + ')'}">
-                    <div class="inner">
-                        <p>{{ instalacion.SubtipoInstalacion }}</p>
-                        <span>{{ instalacion.Instalacion }}</span>
-                        <div>Capacidad: {{ instalacion.Capacidad }}</div>
-                        <div>{{ instalacion.Precio || 0 }}€ /h</div>
-                    </div>
-                </div>
-
-                <div class="back">
-                    <div class="inner">
-                        <div class="address">
-                            <p>{{ instalacion.Direccion || 'Dirección no disponible' }}</p>
-                            <p>{{ instalacion.Telefono }}</p>
+<!-- Contenedor principal responsivo -->
+<main class="wrapper">
+    <div *ngIf="instalaciones.length > 0">
+        <div *ngIf="instalacionesFiltradas.length > 0; else instalacionesEmpty" class="cols">
+            <div *ngFor="let instalacion of instalacionesFiltradas" class="col" (click)="toggleHover($event)">
+                <div class="container">
+                    <!-- Tarjeta frontal -->
+                    <div class="front" [ngStyle]="{'background-image': 'url(' + (instalacion.imagenUrl || 'assets/default-image.jpg') + ')'}">
+                        <div class="inner">
+                            <p>{{ instalacion.SubtipoInstalacion }}</p>
+                            <span>{{ instalacion.Instalacion }}</span>
+                            <div>Capacidad: {{ instalacion.Capacidad }}</div>
+                            <div>{{ instalacion.Precio || 0 }}€ /h</div>
                         </div>
-                        <hr />
-                        <div class="action">
-                            <button (click)="reservar(instalacion); $event.stopPropagation()">Reservar</button>
+                    </div>
+                    
+                    <!-- Tarjeta trasera -->
+                    <div class="back">
+                        <div class="inner">
+                            <div class="address">
+                                <p>{{ instalacion.Direccion || 'Dirección no disponible' }}</p>
+                                <p *ngIf="instalacion.Telefono">Tel: {{ instalacion.Telefono }}</p>
+                            </div>
+                            <hr />
+                            <div class="action">
+                                <button (click)="reservar(instalacion); $event.stopPropagation()">
+                                    Reservar
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <ng-template #instalacionesEmpty>
+            <div class="empty">
+                <p>No hay instalaciones disponibles con los filtros seleccionados.</p>
+            </div>
+        </ng-template>
     </div>
-    <ng-template #instalacionesEmpty>
-        <div *ngIf="instalacionesFiltradas.length === 0" class="wrapper empty">
-            <p>No hay instalaciones disponibles con los filtros seleccionados.</p>
-        </div>
-    </ng-template>
-</div>
+</main>
