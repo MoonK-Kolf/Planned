@@ -128,9 +128,6 @@ router.delete('/:id', async (req, res) => {
     const reservaId = parseInt(req.params.id, 10);
     const userId = req.user.id;
 
-    console.log(reservaId);
-    console.log(userId);
-
     if (isNaN(reservaId)) {
         return res.json({ success: false, message: 'ID de reserva inválido' });
     }
